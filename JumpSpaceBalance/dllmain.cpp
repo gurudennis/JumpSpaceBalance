@@ -1,23 +1,40 @@
 #include "pch.h"
+#include "Mod/Mod.hpp"
+
+#include <thread>
+
+void ModThread()
+{
+}
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
                        LPVOID lpReserved
                      )
 {
-    if (DetourIsHelperProcess()) {
+    if (DetourIsHelperProcess())
+    {
         return TRUE;
     }
 
     switch (ul_reason_for_call)
     {
-    case DLL_PROCESS_ATTACH:
-        DisableThreadLibraryCalls(hModule);
-        break;
-    case DLL_THREAD_ATTACH:
-    case DLL_THREAD_DETACH:
-    case DLL_PROCESS_DETACH:
-        break;
+        case DLL_PROCESS_ATTACH:
+            DisableThreadLibraryCalls(hModule); // forgo per-thread notifications
+            DetourRestoreAfterWith();           // set up Detours
+            //upd::create_proxy(hModule);       // set up UltimateProxyDLL
+            JSB::Mod::GetInstance();            // initialize the mod
+            break;
+        case DLL_THREAD_ATTACH:
+        case DLL_THREAD_DETACH:
+        case DLL_PROCESS_DETACH:
+            break;
     }
+
     return TRUE;
+}
+
+extern "C" __declspec(dllexport) void JumpSpaceBalance_Finalize()
+{
+    JSB::Mod::GetInstance().Finalize();
 }

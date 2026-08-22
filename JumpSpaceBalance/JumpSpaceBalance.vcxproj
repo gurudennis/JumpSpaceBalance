@@ -163,11 +163,12 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="Hooks\Hooks.hpp" />
+    <ClInclude Include="Mod\Mod.hpp" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="Hooks\Hooks.cpp" />
+    <ClCompile Include="Mod\Mod.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
