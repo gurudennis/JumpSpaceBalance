@@ -11,10 +11,6 @@
     <PackageReference Include="LavaGang.MelonLoader" Version="0.7.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\JumpSpaceBalance\JumpSpaceBalance.vcxproj" />
-  </ItemGroup>
-
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="copy $(ProjectDir)bin\$(Configuration)\net8.0\* $(SolutionDir)x64\$(Configuration)\" />
   </Target>

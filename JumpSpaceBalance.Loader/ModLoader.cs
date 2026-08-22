@@ -1,6 +1,8 @@
-﻿namespace JumpSpaceBalance.Loader
+﻿using MelonLoader;
+
+namespace JumpSpaceBalance.Loader
 {
-    public class ModLoader
+    public class ModLoader : MelonMod
     {
 
     }

@@ -4,6 +4,10 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
+  <Folder Name="/Global/">
+    <File Path="LICENSE.txt" />
+    <File Path="README.md" />
+  </Folder>
   <Project Path="JumpSpaceBalance.Loader/JumpSpaceBalance.Loader.csproj" Id="8dda82e2-8714-489b-8003-4b547ff9fbbe" />
   <Project Path="JumpSpaceBalance/JumpSpaceBalance.vcxproj" Id="ff0bca60-28af-4022-8a5a-4882b3d580e0" />
 </Solution>
