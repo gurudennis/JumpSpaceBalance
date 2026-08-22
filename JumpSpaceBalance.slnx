@@ -10,4 +10,8 @@
   </Folder>
   <Project Path="JumpSpaceBalance.Loader/JumpSpaceBalance.Loader.csproj" Id="8dda82e2-8714-489b-8003-4b547ff9fbbe" />
   <Project Path="JumpSpaceBalance/JumpSpaceBalance.vcxproj" Id="ff0bca60-28af-4022-8a5a-4882b3d580e0" />
+  <Project Path="ThirdParty/Detours/vc/Detours.vcxproj" Id="37489709-8054-4903-9c49-a79846049fc9">
+    <BuildType Solution="Debug|*" Project="DebugMDd" />
+    <BuildType Solution="Release|*" Project="ReleaseMD" />
+  </Project>
 </Solution>

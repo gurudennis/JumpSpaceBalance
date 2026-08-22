@@ -9,6 +9,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="Hooks">
+      <UniqueIdentifier>{89f83481-77bc-4f18-9548-1645db38fba9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -17,6 +20,9 @@
     <ClInclude Include="pch.h">
       <Filter>Root</Filter>
     </ClInclude>
+    <ClInclude Include="Hooks\Hooks.hpp">
+      <Filter>Hooks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -24,6 +30,9 @@
     </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Root</Filter>
+    </ClCompile>
+    <ClCompile Include="Hooks\Hooks.cpp">
+      <Filter>Hooks</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

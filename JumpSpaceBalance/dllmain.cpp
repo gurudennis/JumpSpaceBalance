@@ -5,6 +5,10 @@ BOOL APIENTRY DllMain( HMODULE hModule,
                        LPVOID lpReserved
                      )
 {
+    if (DetourIsHelperProcess()) {
+        return TRUE;
+    }
+
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:
@@ -17,4 +21,3 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     }
     return TRUE;
 }
-
