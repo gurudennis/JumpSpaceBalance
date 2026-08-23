@@ -24,6 +24,12 @@
     <BuildType Solution="Release_Standalone|Any CPU" Project="Release" />
     <BuildType Solution="Release_Standalone|x86" Project="Release" />
   </Project>
+  <Project Path="PrepRelease/PrepRelease.csproj" Id="9dd68ad7-e653-44da-b430-1dbddd07c42e">
+    <BuildType Solution="Debug_Standalone|*" Project="Debug" />
+    <BuildType Solution="Release_Standalone|*" Project="Release" />
+    <Build Solution="Debug_Standalone|x64" Project="false" />
+    <Build Solution="Debug|x64" Project="false" />
+  </Project>
   <Project Path="ThirdParty/Detours/vc/Detours.vcxproj" Id="37489709-8054-4903-9c49-a79846049fc9">
     <BuildType Solution="Debug_Standalone|*" Project="DebugMDd" />
     <BuildType Solution="Debug|*" Project="DebugMDd" />

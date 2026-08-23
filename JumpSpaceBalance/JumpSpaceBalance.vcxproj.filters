@@ -64,4 +64,14 @@
       <Filter>Root</Filter>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="postbuild.cmd">
+      <Filter>Root</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="JumpSpaceBalance_readme.txt">
+      <Filter>Root</Filter>
+    </Text>
+  </ItemGroup>
 </Project>

@@ -239,6 +239,9 @@
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
+    <PostBuildEvent>
+      <Command>$(ProjectDir)postbuild.cmd "$(SolutionDir)" "$(ProjectDir)" "$(Configuration)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_Standalone|x64'">
     <ClCompile>
@@ -259,6 +262,9 @@
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
+    <PostBuildEvent>
+      <Command>$(ProjectDir)postbuild.cmd "$(SolutionDir)" "$(ProjectDir)" "$(Configuration)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -281,6 +287,9 @@
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
+    <PostBuildEvent>
+      <Command>$(ProjectDir)postbuild.cmd "$(SolutionDir)" "$(ProjectDir)" "$(Configuration)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_Standalone|x64'">
     <ClCompile>
@@ -303,6 +312,9 @@
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
+    <PostBuildEvent>
+      <Command>$(ProjectDir)postbuild.cmd "$(SolutionDir)" "$(ProjectDir)" "$(Configuration)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
@@ -337,6 +349,12 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="JumpSpaceBalance.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="postbuild.cmd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="JumpSpaceBalance_readme.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
