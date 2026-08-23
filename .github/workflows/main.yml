@@ -18,35 +18,10 @@ jobs:
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v3 # Adds MSBuild.exe to the PATH
 
-    - name: Install ATL/MFC via VS Installer
+    - name: Mock Stale Toolset Directory to Bypass CS1668
       shell: powershell
       run: |
-        # 1. Dynamically locate the pre-installed Visual Studio folder
-        $vsPath = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath
-        Write-Host "Found Visual Studio installed at: $vsPath"
-
-        # 2. Build the precise arguments without broken parameters
-        Set-Location "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\"
-        $Arguments = @(
-          'modify',
-          '--installPath', "`"$vsPath`"",
-          '--add', 'Microsoft.VisualStudio.Component.VC.ATLMFC',
-          '--quiet',
-          '--norestart',
-          '--nocache'
-        )
-        
-        # 3. Safe process execution
-        Write-Host "Starting Visual Studio Installer configuration..."
-        $process = Start-Process -FilePath ".\vs_installer.exe" -ArgumentList $Arguments -Wait -PassThru -WindowStyle Hidden
-        
-        # 4. Handle success/warning codes
-        if ($process.ExitCode -eq 0 -or $process.ExitCode -eq 3010) {
-            Write-Host "ATL/MFC component successfully added!"
-        } else {
-            Write-Error "VS Installer failed with exit code: $($process.ExitCode)"
-            exit 1
-        }
+        New-Item -ItemType Directory -Force -Path "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.44.35207\atlmfc\lib\x64"
 
     - name: Set up MSVC Developer Command Prompt
       # This action automatically finds the live VS path and exports everything to GITHUB_ENV
