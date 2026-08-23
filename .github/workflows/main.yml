@@ -22,18 +22,17 @@ jobs:
       shell: powershell
       run: |
         Set-Location "C:\Program Files (x86)\Microsoft Visual Studio\Installer\"
-        $InstallPath = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
         
         $Arguments = @(
           'modify',
-          '--installPath', "`"$InstallPath`"",
+          '--allInstallations',
           '--add', 'Microsoft.VisualStudio.Component.VC.ATLMFC',
           '--quiet',
           '--norestart',
           '--nocache'
         )
         
-        Write-Host "Starting Visual Studio Installer configuration..."
+        Write-Host "Starting dynamic Visual Studio Installer configuration..."
         $process = Start-Process -FilePath ".\vs_installer.exe" -ArgumentList $Arguments -Wait -PassThru -WindowStyle Hidden
         
         # VS Installer returns 0 for success, 3010 for success but reboot required.
