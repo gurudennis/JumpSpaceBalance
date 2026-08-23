@@ -1,11 +1,13 @@
 #include "pch.h"
 #include "Mod.hpp"
+#include "Utils.hpp"
 #include "../Log/Log.hpp"
 
 #include <IL2CPP_Resolver.hpp>
 
 #include <cassert>
 #include <codecvt>
+#include <vector>
 
 // Uncomment this to print debug info
 // #define JSB_PRINT_DEBUG_INFO
@@ -85,6 +87,81 @@ namespace JSB
         }
     }
 
+    namespace TweakableValues
+    {
+        struct Signature
+        {
+            float minV{};
+            float maxV{};
+            float perLevel{};
+            int32_t idx{};
+            float boundary{};
+
+            bool operator==(const Signature& other) const
+            {
+                return minV == other.minV && maxV == other.maxV &&
+                    perLevel == other.perLevel && idx == other.idx &&
+                    boundary == other.boundary;
+            }
+        };
+
+        struct Modifier
+        {
+            const wchar_t* name{};
+            std::optional<Signature> signature{};
+            float modifier{};
+            bool honorMinMax{};
+        };
+        static constexpr Modifier Modifiers[] =
+        {
+            // Chain (both on-foot and ship)
+            Modifier{ L"Amount of bounces", std::nullopt, 0.01f, false }, // basically always 1 regardless of level
+            Modifier{ L"Amount of damage per jump", std::nullopt, 0.33f, false },
+
+            // Frag (on-foot)
+            Modifier{ L"Projectiles", std::nullopt, 0.33f, false }, // also: L"Damage reduction", L"Spread"
+
+            // Frag (ship)
+            Modifier{ L"Pelletss"/*(sic)*/, std::nullopt, 0.33f, false }, // also: L"Spread", L"Damage modifier"
+
+            // Random status effect (on-foot)
+            Modifier{ L"Proc chance", std::nullopt, 0.1f, false },
+
+            // Engine max speed
+            Modifier{ L"Downtime Percentage Change"/*(sic)*/, Signature{ 0.125f, 0.0f, 0.12f, 0, 0.025f }, 0.5f, false },
+
+            // Materia cost reduction
+            Modifier{ L"Cost reduction", std::nullopt, 0.5f, false },
+        };
+        StringMap<wchar_t, std::vector<Modifier>> ModifierMap;
+
+        void MakeModifierMap()
+        {
+            if (!ModifierMap.empty())
+            {
+                return;
+            }
+
+            ModifierMap.reserve(std::size(Modifiers));
+            for (const Modifier& modifier : Modifiers)
+            {
+                ModifierMap[modifier.name].emplace_back(modifier);
+            }
+        }
+
+        Signature ReadSignature(const void* ths)
+        {
+            return Signature
+            {
+                Read<float>(ths, 0x8),
+                Read<float>(ths, 0xc),
+                Read<float>(ths, 0x10),
+                Read<int32_t>(ths, 0x14),
+                Read<float>(ths, 0x18)
+            };
+        }
+    }
+
     Mod::Mod()
     {
         assert(!instance_);
@@ -94,8 +171,12 @@ namespace JSB
         IL2CPP::Initialize();
         JSB_LOGINF("IL2CPP initialized.");
 
+        JSB_LOGINF("Pre-caching values...");
+        TweakableValues::MakeModifierMap();
+        JSB_LOGINF("Values pre-cached.");
+
         SetUpHooks();
-        
+
     }
 
     Mod::~Mod()
@@ -139,85 +220,38 @@ namespace JSB
     {
         float res = Hooks::O_ItemModuleTweakableValue_CalculateRolledValue(ths, roll, upgradeLevel);
 
+        const wchar_t* const name = ReadStr(ths, 0x0);
+        if (!name || !*name)
+        {
+            return res;
+        }
+
+        const TweakableValues::Signature signature = TweakableValues::ReadSignature(ths);
+
 #ifdef JSB_PRINT_DEBUG_INFO
         JSB_LOGINF("ItemModuleTweakableValue_CalculateRolledValue({:#x}, {}, {}) = {}: n={}, mm={}-{}, p={}, i={}, r={}",
-            uint64_t(ths), roll, upgradeLevel, res, ToNarrow(ReadStr(ths, 0x0)), Read<float>(ths, 0x8),
-            Read<float>(ths, 0xc), Read<float>(ths, 0x10), Read<int32_t>(ths, 0x14), Read<float>(ths, 0x18));
+            uint64_t(ths), roll, upgradeLevel, res, ToNarrow(name), signature.minV, signature.maxV,
+            signature.perLevel, signature.idx, signature.boundary);
 #endif
 
-        struct Signature
+        auto iter = TweakableValues::ModifierMap.find(name);
+        if (iter == TweakableValues::ModifierMap.end())
         {
-            float minV;
-            float maxV;
-            float perLevel;
-            int32_t idx;
-            float boundary;
-            bool operator==(const Signature& other)
+            return res;
+        }
+
+        for (const TweakableValues::Modifier& modifier : iter->second)
+        {
+            if (modifier.signature && signature != *modifier.signature)
             {
-                return minV == other.minV && maxV == other.maxV &&
-                       perLevel == other.perLevel && idx == other.idx &&
-                       boundary == other.boundary;
+                continue;
             }
-        };
-        struct Modifier
-        {
-            const wchar_t* name{};
-            std::optional<Signature> signature{};
-            float modifier{};
-            bool honorMinMax{};
-        };
-        static constexpr Modifier modifiers[] =
-        {
-            // Chain (both on-foot and ship)
-            Modifier{ L"Amount of bounces", std::nullopt, 0.01, false }, // basically always 1 regardless of level
-            Modifier{ L"Amount of damage per jump", std::nullopt, 0.33, false },
 
-            // Frag (on-foot)
-            Modifier{ L"Projectiles", std::nullopt, 0.33, false }, // also: L"Damage reduction", L"Spread"
+            const float minV = modifier.honorMinMax ? signature.minV : -1.0f;
+            const float maxV = modifier.honorMinMax ? signature.maxV : -1.0f;
+            res = FixModifier(res * modifier.modifier, minV, maxV, signature.boundary);
 
-            // Frag (ship)
-            Modifier{ L"Pelletss"/*(sic)*/, std::nullopt, 0.33, false }, // also: L"Spread", L"Damage modifier"
-
-            // Random status effect (on-foot)
-            Modifier{ L"Proc chance", std::nullopt, 0.1, false },
-
-            // Engine max speed
-            Modifier{ L"Downtime Percentage Change"/*(sic)*/, Signature{ 0.125f, 0.0f, 0.12f, 0, 0.025 }, 0.5, false },
-
-            // Materia cost reduction
-            Modifier{ L"Cost reduction", std::nullopt, 0.5, false },
-        };
-
-        const wchar_t* name = ReadStr(ths, 0x0);
-        if (*name == L'A' || *name == L'P' || *name == L'D' || *name == L'C')
-        {
-            for (const Modifier& modifier : modifiers)
-            {
-                if (modifier.signature)
-                {
-                    Signature signature
-                    {
-                        Read<float>(ths, 0x8),
-                        Read<float>(ths, 0xc),
-                        Read<float>(ths, 0x10),
-                        Read<int32_t>(ths, 0x14),
-                        Read<float>(ths, 0x18)
-                    };
-                    if (signature != *modifier.signature)
-                    {
-                        continue;
-                    }
-                }
-
-                if (wcscmp(name, modifier.name) == 0)
-                {
-                    const float minV = modifier.honorMinMax ? Read<float>(ths, 0x8) : -1.0f;
-                    const float maxV = modifier.honorMinMax ? Read<float>(ths, 0xc) : -1.0f;
-                    const float boundary = Read<float>(ths, 0x18);
-                    res = FixModifier(res * modifier.modifier, minV, maxV, boundary);
-                    break;
-                }
-            }
+            break;
         }
 
         return res;

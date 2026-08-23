@@ -310,6 +310,7 @@
     <ClInclude Include="Log\Log.hpp" />
     <ClInclude Include="Mod\Mod.hpp" />
     <ClInclude Include="Mod\ModThread.hpp" />
+    <ClInclude Include="Mod\Utils.hpp" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>

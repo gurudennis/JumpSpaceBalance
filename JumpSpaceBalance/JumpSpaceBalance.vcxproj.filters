@@ -35,6 +35,9 @@
     <ClInclude Include="Log\Log.hpp">
       <Filter>Log</Filter>
     </ClInclude>
+    <ClInclude Include="Mod\Utils.hpp">
+      <Filter>Mod</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
