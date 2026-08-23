@@ -165,15 +165,18 @@ namespace JSB
         };
 
         const wchar_t* name = ReadStr(ths, 0x0);
-        for (const Modifier& modifier : modifiers)
+        if (*name == L'A' || *name == L'P') // optimization that happens to hold for now (!)
         {
-            if (wcscmp(name, modifier.name) == 0)
+            for (const Modifier& modifier : modifiers)
             {
-                const float minV = modifier.honorMinMax ? Read<float>(ths, 0x8) : -1.0f;
-                const float maxV = modifier.honorMinMax ? Read<float>(ths, 0xc) : -1.0f;
-                const float boundary = Read<float>(ths, 0x18);
-                res = FixModifier(res * modifier.modifier, minV, maxV, boundary);
-                break;
+                if (wcscmp(name, modifier.name) == 0)
+                {
+                    const float minV = modifier.honorMinMax ? Read<float>(ths, 0x8) : -1.0f;
+                    const float maxV = modifier.honorMinMax ? Read<float>(ths, 0xc) : -1.0f;
+                    const float boundary = Read<float>(ths, 0x18);
+                    res = FixModifier(res * modifier.modifier, minV, maxV, boundary);
+                    break;
+                }
             }
         }
 
