@@ -1,0 +1,41 @@
+name: Build .NET Framework and C++
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v3 # Adds MSBuild.exe to the PATH
+
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v2 # Ensures NuGet is available
+
+    - name: Restore NuGet Packages
+      run: nuget restore JumpSpaceBalance.slnx
+
+    - name: Build Solution in Release (Melon)
+      run: msbuild JumpSpaceBalance.slnx /p:Configuration=Release
+
+    - name: Build Solution in Release_Standalone
+      run: msbuild JumpSpaceBalance.slnx /p:Configuration=Release_Standalone
+
+    - name: Upload Binaries in Release (Melon)
+      uses: actions/upload-artifact@v4
+      with:
+        name: jumpspacebalance_melon
+        path: out\Release\
+
+    - name: Upload Binaries in Release_Standalone
+      uses: actions/upload-artifact@v4
+      with:
+        name: jumpspacebalance_standalone
+        path: out\Release_Standalone\
