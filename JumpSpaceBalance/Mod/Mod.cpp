@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Mod.hpp"
 #include "Utils.hpp"
-#include "../Log/Log.hpp"
+#include "Log/Log.hpp"
 
 #include <IL2CPP_Resolver.hpp>
 

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ModThread.hpp"
 #include "Mod.hpp"
-#include "../Log/Log.hpp"
+#include "Log/Log.hpp"
 
 #include <chrono>
 

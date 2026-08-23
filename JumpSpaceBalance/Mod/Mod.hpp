@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Hooks/Hooks.hpp"
+#include "Hooks/Hooks.hpp"
 
 #include <atomic>
 #include <optional>
