@@ -145,30 +145,70 @@ namespace JSB
             Read<float>(ths, 0xc), Read<float>(ths, 0x10), Read<int32_t>(ths, 0x14), Read<float>(ths, 0x18));
 #endif
 
+        struct Signature
+        {
+            float minV;
+            float maxV;
+            float perLevel;
+            int32_t idx;
+            float boundary;
+            bool operator==(const Signature& other)
+            {
+                return minV == other.minV && maxV == other.maxV &&
+                       perLevel == other.perLevel && idx == other.idx &&
+                       boundary == other.boundary;
+            }
+        };
         struct Modifier
         {
             const wchar_t* name{};
+            std::optional<Signature> signature{};
             float modifier{};
             bool honorMinMax{};
         };
-        static Modifier modifiers[] =
+        static constexpr Modifier modifiers[] =
         {
             // Chain (both on-foot and ship)
-            Modifier{ L"Amount of bounces", 0.33, true },
-            Modifier{ L"Amount of damage per jump", 0.33, false },
+            Modifier{ L"Amount of bounces", std::nullopt, 0.01, false }, // basically always 1 regardless of level
+            Modifier{ L"Amount of damage per jump", std::nullopt, 0.33, false },
 
             // Frag (on-foot)
-            Modifier{ L"Projectiles", 0.5, false }, // also: L"Damage reduction", L"Spread"
+            Modifier{ L"Projectiles", std::nullopt, 0.33, false }, // also: L"Damage reduction", L"Spread"
 
             // Frag (ship)
-            Modifier{ L"Pelletss"/*(sic)*/, 0.5, false }, // also: L"Spread", L"Damage modifier"
+            Modifier{ L"Pelletss"/*(sic)*/, std::nullopt, 0.33, false }, // also: L"Spread", L"Damage modifier"
+
+            // Random status effect (on-foot)
+            Modifier{ L"Proc chance", std::nullopt, 0.1, false },
+
+            // Engine max speed
+            Modifier{ L"Downtime Percentage Change"/*(sic)*/, Signature{ 0.125f, 0.0f, 0.12f, 0, 0.025 }, 0.5, false },
+
+            // Materia cost reduction
+            Modifier{ L"Cost reduction", std::nullopt, 0.5, false },
         };
 
         const wchar_t* name = ReadStr(ths, 0x0);
-        if (*name == L'A' || *name == L'P') // optimization that happens to hold for now (!)
+        if (*name == L'A' || *name == L'P' || *name == L'D' || *name == L'C')
         {
             for (const Modifier& modifier : modifiers)
             {
+                if (modifier.signature)
+                {
+                    Signature signature
+                    {
+                        Read<float>(ths, 0x8),
+                        Read<float>(ths, 0xc),
+                        Read<float>(ths, 0x10),
+                        Read<int32_t>(ths, 0x14),
+                        Read<float>(ths, 0x18)
+                    };
+                    if (signature != *modifier.signature)
+                    {
+                        continue;
+                    }
+                }
+
                 if (wcscmp(name, modifier.name) == 0)
                 {
                     const float minV = modifier.honorMinMax ? Read<float>(ths, 0x8) : -1.0f;
