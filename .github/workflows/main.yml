@@ -48,6 +48,12 @@ jobs:
             exit 1
         }
 
+    - name: Set up MSVC Developer Command Prompt
+      # This action automatically finds the live VS path and exports everything to GITHUB_ENV
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
+
     - name: Setup NuGet
       uses: NuGet/setup-nuget@v2 # Ensures NuGet is available
 
