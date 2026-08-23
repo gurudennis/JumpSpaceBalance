@@ -71,11 +71,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)ThirdParty\Detours\src;$(SolutionDir)ThirdParty\UltimateProxyDLL;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)ThirdParty\Detours\src;$(SolutionDir)ThirdParty\UltimateProxyDLL;$(SolutionDir)ThirdParty\IL2CPP_Resolver;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)ThirdParty\Detours\lib.X64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)ThirdParty\Detours\src;$(SolutionDir)ThirdParty\UltimateProxyDLL;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)ThirdParty\Detours\src;$(SolutionDir)ThirdParty\UltimateProxyDLL;$(SolutionDir)ThirdParty\IL2CPP_Resolver;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)ThirdParty\Detours\lib.X64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -163,12 +163,14 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="Hooks\Hooks.hpp" />
+    <ClInclude Include="Log\Log.hpp" />
     <ClInclude Include="Mod\Mod.hpp" />
     <ClInclude Include="Mod\ModThread.hpp" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="Log\Log.cpp" />
     <ClCompile Include="Mod\Mod.cpp" />
     <ClCompile Include="Mod\ModThread.cpp" />
     <ClCompile Include="pch.cpp">

@@ -12,6 +12,9 @@
     <Filter Include="Hooks">
       <UniqueIdentifier>{89f83481-77bc-4f18-9548-1645db38fba9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Log">
+      <UniqueIdentifier>{1f0b4698-1ecd-4b4f-91ea-cfdfcb08fe33}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -29,6 +32,9 @@
     <ClInclude Include="Mod\ModThread.hpp">
       <Filter>Mod</Filter>
     </ClInclude>
+    <ClInclude Include="Log\Log.hpp">
+      <Filter>Log</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -42,6 +48,9 @@
     </ClCompile>
     <ClCompile Include="Mod\ModThread.cpp">
       <Filter>Mod</Filter>
+    </ClCompile>
+    <ClCompile Include="Log\Log.cpp">
+      <Filter>Log</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

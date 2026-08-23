@@ -25,9 +25,9 @@ namespace JSB
                     {
                         return false;
                     }
-
-                    return true;
                 }
+
+                return true;
             });
         }
 
@@ -55,9 +55,9 @@ namespace JSB
                     {
                         return false;
                     }
-
-                    return true;
                 }
+
+                return true;
             });
 
             if (ok)

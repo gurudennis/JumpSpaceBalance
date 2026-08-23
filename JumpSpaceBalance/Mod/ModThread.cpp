@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ModThread.hpp"
 #include "Mod.hpp"
+#include "../Log/Log.hpp"
 
 #include <chrono>
 
@@ -25,17 +26,25 @@ namespace JSB
 
     void ModThread::ThreadProc()
     {
+        JSB_LOGINF("Waiting for game to initialize...");
+
         // Wait until GameAssembly is found
         while (!GetModuleHandleW(L"gameassembly.dll"))
         {
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }
 
+        JSB_LOGINF("Loading the mod...");
+
         // Start the mod
         Mod mod{};
 
+        JSB_LOGINF("Mod loaded successfully.");
+
         // Wait for a signal to exit
         WaitForSingleObject(stopEvent_, INFINITE);
+
+        JSB_LOGINF("Exiting");
     }
 
     void ModThread::Finalize()

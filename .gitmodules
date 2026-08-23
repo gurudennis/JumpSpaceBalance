@@ -4,3 +4,6 @@
 [submodule "ThirdParty/UltimateProxyDLL"]
 	path = ThirdParty/UltimateProxyDLL
 	url = https://github.com/techiew/UltimateProxyDLL.git
+[submodule "ThirdParty/IL2CPP_Resolver"]
+	path = ThirdParty/IL2CPP_Resolver
+	url = https://github.com/sneakyevil/IL2CPP_Resolver.git
