@@ -18,6 +18,10 @@
     <Build Solution="Debug_Standalone|x64" Project="false" />
     <Build Solution="Release_Standalone|x64" Project="false" />
   </Project>
+  <Project Path="JumpSpaceBalance.Setup/JumpSpaceBalance.Setup.csproj" Id="3811d75d-5e90-44ba-bc90-14ca7773cb2d">
+    <BuildType Solution="Debug_Standalone|*" Project="Debug" />
+    <BuildType Solution="Release_Standalone|*" Project="Release" />
+  </Project>
   <Project Path="JumpSpaceBalance/JumpSpaceBalance.vcxproj" Id="ff0bca60-28af-4022-8a5a-4882b3d580e0">
     <BuildType Solution="Debug_Standalone|Any CPU" Project="Debug" />
     <BuildType Solution="Debug_Standalone|x86" Project="Debug" />
