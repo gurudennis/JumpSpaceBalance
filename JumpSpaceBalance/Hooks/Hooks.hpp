@@ -34,10 +34,17 @@ namespace JSB
         template <typename TFunc>
         bool Add(TFunc hook, TFunc& original)
         {
+            if (!hook || !original)
+            {
+                return false;
+            }
+
             hooks_.emplace_back(Hook{
                 .hook = static_cast<void*>(hook),
-                .original = &static_cast<void*&>(original)
+                .original = reinterpret_cast<void**>(&original)
             });
+
+            return true;
         }
 
         bool Apply()

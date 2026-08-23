@@ -13,8 +13,13 @@ namespace JSB
         Mod();
         ~Mod();
 
+        // Hook infrastructure
+        static Mod& GetInstance();
+        float Hook_ItemModuleTweakableValue_CalculateRolledValue(void* ths, float roll, int32_t upgradeLevel);
+
     private:
         void SetUpHooks();
+        void HookFunctions();
 
     private:
         static inline Mod* instance_{};
