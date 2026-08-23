@@ -26,6 +26,9 @@
     <ClInclude Include="Mod\Mod.hpp">
       <Filter>Mod</Filter>
     </ClInclude>
+    <ClInclude Include="Mod\ModThread.hpp">
+      <Filter>Mod</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -35,6 +38,9 @@
       <Filter>Root</Filter>
     </ClCompile>
     <ClCompile Include="Mod\Mod.cpp">
+      <Filter>Mod</Filter>
+    </ClCompile>
+    <ClCompile Include="Mod\ModThread.cpp">
       <Filter>Mod</Filter>
     </ClCompile>
   </ItemGroup>

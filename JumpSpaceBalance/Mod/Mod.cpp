@@ -1,24 +1,37 @@
 #include "pch.h"
 #include "Mod.hpp"
 
+#include <cassert>
+
 namespace JSB
 {
-    Mod& Mod::GetInstance()
+    namespace Hooks
     {
-        static Mod mod;
-        return mod;
+        // ...
     }
 
     Mod::Mod()
     {
+        assert(!instance_);
+        instance_ = this;
+
+        // Set up the hooks
+        hooks_.emplace();
+        SetUpHooks();
+        hooks_->Apply();
     }
 
     Mod::~Mod()
     {
-        Finalize();
+        // Tear down the hooks
+        hooks_.reset();
+
+        assert(instance_);
+        instance_ = nullptr;
     }
 
-    void Mod::Finalize()
+    void Mod::SetUpHooks()
     {
+        // ...
     }
 }

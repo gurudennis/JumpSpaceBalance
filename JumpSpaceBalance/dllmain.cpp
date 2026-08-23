@@ -1,11 +1,7 @@
 #include "pch.h"
-#include "Mod/Mod.hpp"
+#include "Mod/ModThread.hpp"
 
-#include <thread>
-
-void ModThread()
-{
-}
+#include <UltimateProxyDLL.h> // must be included precisely once, here
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
@@ -22,8 +18,8 @@ BOOL APIENTRY DllMain( HMODULE hModule,
         case DLL_PROCESS_ATTACH:
             DisableThreadLibraryCalls(hModule); // forgo per-thread notifications
             DetourRestoreAfterWith();           // set up Detours
-            //upd::create_proxy(hModule);       // set up UltimateProxyDLL
-            JSB::Mod::GetInstance();            // initialize the mod
+            upd::create_proxy(hModule);         // set up UltimateProxyDLL
+            JSB::ModThread::GetInstance();      // start the mod thread
             break;
         case DLL_THREAD_ATTACH:
         case DLL_THREAD_DETACH:
@@ -36,5 +32,5 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 
 extern "C" __declspec(dllexport) void JumpSpaceBalance_Finalize()
 {
-    JSB::Mod::GetInstance().Finalize();
+    JSB::ModThread::GetInstance().Finalize();
 }

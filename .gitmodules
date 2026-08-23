@@ -1,3 +1,6 @@
 [submodule "ThirdParty/Detours"]
 	path = ThirdParty/Detours
 	url = https://github.com/microsoft/Detours.git
+[submodule "ThirdParty/UltimateProxyDLL"]
+	path = ThirdParty/UltimateProxyDLL
+	url = https://github.com/techiew/UltimateProxyDLL.git

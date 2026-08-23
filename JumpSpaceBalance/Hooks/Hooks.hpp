@@ -67,6 +67,8 @@ namespace JSB
                     hook.applied = true;
                 }
             }
+
+            return true;
         }
 
     private:
