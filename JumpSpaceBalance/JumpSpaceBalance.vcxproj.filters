@@ -38,6 +38,9 @@
     <ClInclude Include="Mod\Utils.hpp">
       <Filter>Mod</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Root</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -55,5 +58,10 @@
     <ClCompile Include="Log\Log.cpp">
       <Filter>Log</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="JumpSpaceBalance.rc">
+      <Filter>Root</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
