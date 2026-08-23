@@ -28,6 +28,9 @@ namespace JSB
     {
         JSB_LOGINF("Waiting for game to initialize...");
 
+        // Startup delay
+        std::this_thread::sleep_for(std::chrono::seconds(6));
+
         // Wait until GameAssembly is found
         while (!GetModuleHandleW(L"gameassembly.dll"))
         {

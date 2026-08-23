@@ -5,6 +5,10 @@
 #include <IL2CPP_Resolver.hpp>
 
 #include <cassert>
+#include <codecvt>
+
+// Uncomment this to print debug info
+// #define JSB_PRINT_DEBUG_INFO
 
 namespace JSB
 {
@@ -30,6 +34,43 @@ namespace JSB
             JSB_LOGINF("Hooking class=\"{}\" function=\"{}\" at address={:#x}", cls, func, uint64_t(address));
 
             return true;
+        }
+
+        template <typename T>
+        T Read(const void* addr, size_t offset = 0)
+        {
+            return *reinterpret_cast<const T*>(static_cast<const std::byte*>(addr) + offset);
+        }
+
+        const wchar_t* ReadStr(const void* addr, size_t offset = 0)
+        {
+            const Unity::System_String* str = *(const Unity::System_String**)(static_cast<const std::byte*>(addr) + offset);
+            return str->m_wString;
+        }
+
+        std::string ToNarrow(const std::wstring& wstr) {
+            std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+            return converter.to_bytes(wstr);
+        }
+
+        float FixModifier(float value, float minValue, float maxValue, float boundary)
+        {
+            if (boundary > 0.0f)
+            {
+                value = std::ceil(value / boundary) * boundary;
+            }
+
+            if (minValue >= 0.0f && value < minValue)
+            {
+                value = minValue;
+            }
+
+            if (maxValue >= 0.0f && value > maxValue)
+            {
+                value = maxValue;
+            }
+
+            return value;
         }
     }
 
@@ -96,8 +137,46 @@ namespace JSB
 
     float Mod::Hook_ItemModuleTweakableValue_CalculateRolledValue(void* ths, float roll, int32_t upgradeLevel)
     {
-        const float res = Hooks::O_ItemModuleTweakableValue_CalculateRolledValue(ths, roll, upgradeLevel);
-        JSB_LOGINF("ItemModuleTweakableValue_CalculateRolledValue({:#x}, {}, {}) = {}", uint64_t(ths), roll, upgradeLevel, res);
+        float res = Hooks::O_ItemModuleTweakableValue_CalculateRolledValue(ths, roll, upgradeLevel);
+
+#ifdef JSB_PRINT_DEBUG_INFO
+        JSB_LOGINF("ItemModuleTweakableValue_CalculateRolledValue({:#x}, {}, {}) = {}: n={}, mm={}-{}, p={}, i={}, r={}",
+            uint64_t(ths), roll, upgradeLevel, res, ToNarrow(ReadStr(ths, 0x0)), Read<float>(ths, 0x8),
+            Read<float>(ths, 0xc), Read<float>(ths, 0x10), Read<int32_t>(ths, 0x14), Read<float>(ths, 0x18));
+#endif
+
+        struct Modifier
+        {
+            const wchar_t* name{};
+            float modifier{};
+            bool honorMinMax{};
+        };
+        static Modifier modifiers[] =
+        {
+            // Chain (both on-foot and ship)
+            Modifier{ L"Amount of bounces", 0.33, true },
+            Modifier{ L"Amount of damage per jump", 0.33, false },
+
+            // Frag (on-foot)
+            Modifier{ L"Projectiles", 0.5, false }, // also: L"Damage reduction", L"Spread"
+
+            // Frag (ship)
+            Modifier{ L"Pelletss"/*(sic)*/, 0.5, false }, // also: L"Spread", L"Damage modifier"
+        };
+
+        const wchar_t* name = ReadStr(ths, 0x0);
+        for (const Modifier& modifier : modifiers)
+        {
+            if (wcscmp(name, modifier.name) == 0)
+            {
+                const float minV = modifier.honorMinMax ? Read<float>(ths, 0x8) : -1.0f;
+                const float maxV = modifier.honorMinMax ? Read<float>(ths, 0xc) : -1.0f;
+                const float boundary = Read<float>(ths, 0x18);
+                res = FixModifier(res * modifier.modifier, minV, maxV, boundary);
+                break;
+            }
+        }
+
         return res;
     }
 }
