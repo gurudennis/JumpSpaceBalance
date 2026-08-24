@@ -11,3 +11,4 @@ mkdir %SOLUTION_DIR%out\%CONFIGURATION%
 mkdir %SOLUTION_DIR%out\%CONFIGURATION%\Mods
 copy %PROJECT_DIR%bin\%CONFIGURATION%\net6.0\JumpSpaceBalance.Loader.dll %SOLUTION_DIR%out\%CONFIGURATION%\Mods\
 copy %PROJECT_DIR%JumpSpaceBalance_readme.txt %SOLUTION_DIR%out\%CONFIGURATION%\
+copy %PROJECT_DIR%JumpSpaceBalance_uninstall.cmd %SOLUTION_DIR%out\%CONFIGURATION%\

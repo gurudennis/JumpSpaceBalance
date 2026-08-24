@@ -8,4 +8,6 @@ Do NOT rename any files or directories.
 Note that if you don't have Melon Loader installed and you don't wish to install it, then this is the wrong version of the
 JumpSpaceBalance mod. You need to go back and download the Standalone version of this mod instead.
 
+To uninstall the mod, run JumpSpaceBalance_uinstall.cmd (double-click on it).
+
 Happy hunting!

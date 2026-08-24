@@ -68,6 +68,9 @@
     <None Include="postbuild.cmd">
       <Filter>Root</Filter>
     </None>
+    <None Include="JumpSpaceBalance_uninstall.cmd">
+      <Filter>Root</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="JumpSpaceBalance_readme.txt">

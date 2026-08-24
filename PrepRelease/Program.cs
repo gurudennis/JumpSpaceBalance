@@ -30,6 +30,9 @@ namespace PrepRelease
             ReplaceVersionInFiles(root, "JumpSpaceBalance.rc", "VALUE \"FileVersion\", \"[0-9]+.[0-9]+.[0-9]+.[0-9]+\"", $"VALUE \"FileVersion\", \"{version.ToString()}\"");
             ReplaceVersionInFiles(root, "JumpSpaceBalance.rc", "VALUE \"ProductVersion\", \"[0-9]+.[0-9]+.[0-9]+.[0-9]+\"", $"VALUE \"ProductVersion\", \"{version.ToString()}\"");
 
+            // Update the version in Setup.iss
+            ReplaceVersionInFiles(root, "Setup.iss", "MyAppVersion \"[0-9]+.[0-9]+.[0-9]+.[0-9]+\"", $"MyAppVersion \"{version.ToString()}\"");
+
             return 0;
         }
 

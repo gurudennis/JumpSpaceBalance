@@ -14,4 +14,5 @@ if %ERRORLEVEL% neq 0 (
     REM Standalone package
     copy %SOLUTION_DIR%x64\%CONFIGURATION%\JumpSpaceBalance.dll %SOLUTION_DIR%out\%CONFIGURATION%\
     copy %PROJECT_DIR%JumpSpaceBalance_readme.txt %SOLUTION_DIR%out\%CONFIGURATION%\
+    copy %PROJECT_DIR%JumpSpaceBalance_uninstall.cmd %SOLUTION_DIR%out\%CONFIGURATION%\
 )

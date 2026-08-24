@@ -1,5 +1,5 @@
 #define MyAppName "JumpSpaceBalance mod"
-#define MyAppVersion "1.0.2.0"
+#define MyAppVersion "1.0.3.0"
 #define MyAppPublisher "gurudennis"
 #define MyAppURL "https://github.com/gurudennis/JumpSpaceBalance"
 #define EscapeConstArgument(Value) StringChange(StringChange(StringChange(Value, "%", "%25"), ",", "%2c"), "}", "%7d")
@@ -24,7 +24,7 @@ CreateAppDir=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only).
 ;PrivilegesRequired=lowest
 OutputDir={#SolutionDir}\out\Setup
-OutputBaseFilename=JumpSpaceBalance_Setup
+OutputBaseFilename=JumpSpaceBalance_Setup_{#MyAppVersion}
 SolidCompression=yes
 WizardStyle=modern
 DefaultDirName={code:FindInstallDir}

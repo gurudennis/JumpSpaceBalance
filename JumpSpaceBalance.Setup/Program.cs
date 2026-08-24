@@ -60,6 +60,7 @@ namespace JumpSpaceBalance.Setup
                 Log($"Melon Loader detected at \"{to}\"");
 
                 MoveFile(Path.Combine(from, "Release"), to, "JumpSpaceBalance_readme.txt");
+                MoveFile(Path.Combine(from, "Release"), to, "JumpSpaceBalance_uninstall.cmd");
                 MoveFile(Path.Combine(from, "Release", "Mods"), Path.Combine(to, "Mods"), "JumpSpaceBalance.Loader.dll");
                 MoveFile(Path.Combine(from, "Release", "UserLibs"), Path.Combine(to, "UserLibs"), "JumpSpaceBalance.dll");
             }
@@ -68,6 +69,7 @@ namespace JumpSpaceBalance.Setup
                 Log($"Melon Loader NOT found at \"{to}\"");
 
                 MoveFile(Path.Combine(from, "Release_Standalone"), to, "JumpSpaceBalance_readme.txt");
+                MoveFile(Path.Combine(from, "Release_Standalone"), to, "JumpSpaceBalance_uninstall.cmd");
                 MoveFile(Path.Combine(from, "Release_Standalone"), to, "JumpSpaceBalance.dll", "winhttp.dll");
             }
 

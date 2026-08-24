@@ -355,6 +355,7 @@
     <ResourceCompile Include="JumpSpaceBalance.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="JumpSpaceBalance_uninstall.cmd" />
     <None Include="postbuild.cmd" />
   </ItemGroup>
   <ItemGroup>
