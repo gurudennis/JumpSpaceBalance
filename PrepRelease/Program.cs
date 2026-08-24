@@ -23,6 +23,7 @@ namespace PrepRelease
 
             // Update the version in AssemblyInfo.cs
             ReplaceVersionInFiles(root, "AssemblyInfo.cs", "Version\\(\"[0-9]+?\\.[0-9]+?\\.[0-9]+?\\.[0-9]+?\"\\)", $"Version(\"{version.ToString()}\")");
+            ReplaceVersionInFiles(root, "AssemblyInfo.cs", "\"JumpSpaceBalance\", \"[0-9]+?\\.[0-9]+?\\.[0-9]+?\\.[0-9]+?\", \"", $"\"JumpSpaceBalance\", \"{version.ToString(3)}\", \"");
 
             // Update the version in JumpSpaceBalance.rc
             ReplaceVersionInFiles(root, "JumpSpaceBalance.rc", "VERSION [0-9]+,[0-9]+,[0-9]+,[0-9]+", $"VERSION {version.ToString().Replace('.', ',')}");

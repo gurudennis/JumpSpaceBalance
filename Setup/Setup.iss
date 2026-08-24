@@ -6,7 +6,7 @@
 #define SolutionDir ".."
 
 ; "Debug" or "Release"
-#define SetupFlavor "Debug"
+#define SetupFlavor "Release"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -29,6 +29,7 @@ SolidCompression=yes
 WizardStyle=modern
 DefaultDirName={code:FindInstallDir}
 DisableDirPage=no
+Uninstallable=no
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
