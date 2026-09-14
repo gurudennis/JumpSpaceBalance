@@ -1,4 +1,4 @@
-# JumpSpaceBalance
+# **OUTDATED - DO NOT USE** JumpSpaceBalance
 
 JumpSpaceBalance is a balance mod for [Jump Space](https://store.steampowered.com/app/1757300/Jump_Space/) (the game).
 Its purpose is to rebalance some of the modules and components to make gameplay more challenging similarly to difficulty
